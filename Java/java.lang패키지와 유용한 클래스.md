@@ -29,12 +29,8 @@ Car car2 = new Car();
 
 System.out.println(car1.equals(car2));
     
-car1 = car2; // 두 참조 변수가 같은 주소를 가리킴.
-System.out.println(car1.equals(car2));
-    
 // 실행 결과
 // false
-// true
 ```
 <br>
 
