@@ -174,6 +174,138 @@ System.out.println(Array.deepEquals(str2D, str2D2)); // true
 #### asList()
 - 배열을 다루기 편리한 메서드(static) 제공 
 - 읽기전용
+<br>
 
 
+## Comparator와 Comparable
+- 객체 정렬에 필요한 메서드를 정의한 interface
+- **`Comparable`** : 기본 정렬기준 구현
+- **`Comparator`** : 기본 정렬 기준 외 다른 기준으로 정렬하고자 할 때
+   ```Java
+   public interface Compatator {
+      int compare(Object o1, Object o2);  // o1과 o2를 비교
+      boolean equals(Object obj);
+   }
+   public interface Comparable {
+      int comparaTo(Object o);   // 객체 자신(this)과 o를 비교
+   }
+   ```
+   
+- `sort()` : 두 대상에 대하여 1) 비교 2) 자리바꿈
+- `compare()`, `compareTo()`
+   - 두 객체의 비교 결과 반환
+   - 같으면 0 오른쪽이 크면 -, 왼쪽이 크면 +
+- Integer와 Comparable <- 기본 정렬 기준 제공
+<br>
+
+
+## HashSet
+- 순서 x, 중복 x (list와 반대 특성)
+- HashSet과 TreeSet은 set 인터페이스를 구현한 대표적인 클래스
+- Set이 필요하다면 일반적인 HashSet을 사용하지만, **순서를 유지하고 싶다면 `LinkedHashSet`** 클래스를 사용한다.
+
+#### HashSet - 주요 메서드
+- `HashSet(Colletion c)`
+   - 생성자를 가지고 있다.
+   - 지정 된 클래스에 모든 객체를 저장.
+   - 객체를 저장하기 전에 기존에 같은 객체가 있는지 확인
+      - 같은 객체가 없으면 저장, 있으면 저장x
+   - `boolean add(Object o)`메서드를 실행 시 `equals()`, `hashCode()`를 호출
+   - HashSet이 동작하기 위해서는 **equals와 hashcode가 오버라이딩 되어있어야 함**
+- `HashSet(int initialCapacity)`
+   - 초기용량 정하기 보통 두배로 늘린다.
+   - 언제 두배로 늘릴 것인지 정하는 `HashSet(int initialCapacity, float loadFactor)
+- 추가 삭제와 모두 삭제하는 메서드
+   - `retainAll(Colletion c)` : 조건부 삭제 . 차집합 구할 때 쓰인다.
+   - `addAll(Colletion c)` : 합집합
+   - `removeAll(Colletion c)` : 교집합
+- **Set은 순서가 없기 때문에 정렬 불가** -> 리스트 등을 사용하여 컬렉션을 바꾼다음 정렬
+<br>
+
+
+## TreeSet
+- 이진 탐색 트리(binary search tree)로 구현
+- **범위 검색(from~to)과 정렬**에 유리한 컬렉션 클래스 -> **따로 정렬해줄 필요가 X**
+- - 각 요소가 나무 형태로 연결
+- 모든 노드(요소)가 최대 **최대 2개**(0~2개)의 하위 노드를 갖음
+- LinkedList의 변형
+   - LinkedList는 1개의 노드만 가리키지만, **Treenode는 2개의 노드를 가리킴**
+- 단점 : 데이터가 많아질 수록 추가 삭제에 시간 더 오래걸림(비교횟수 증가)
+
+#### 이진 탐색 트리(binary search tree)
+- 부모보다 작은 값은 왼쪽, 큰 값은 오른쪽에 저장
+
+#### TreeSet 데이터 저장과정 Boolean add(Oject o)
+- HashSet은 equals(), HashCode()로 비교
+- TreeSet은 Compare()을 호출해서 비교
+- TreeSet에 7,4,9,1,5의 순서대로 데이터를 저장하면, 아래의 과정을 거친다.
+   - 루트부터 트리를 따라 **내려가며 값을 비교**
+   - 작으면 왼쪽, 크면 오른쪽에 저장
+
+#### TreeSet의 주요 생성자와 메서드
+- `TreeSet(Comparator comp)` : 생성자. 주어진 정렬기준으로 정렬하는 TreeSet을 생성
+- `Object first()` : 오름차순으로 제일 작은 값
+- 범위 검색에 유용한 메서드
+   - `subSet()` : (from~to) 기준 값 사이에 있는 값
+   - `haedSet()` : 기준 값보다 작은 값.(기준 값은 제외)
+   - `tailSet()` : 기준 값보다 큰 값.(기준 값은 제외)
+- 트리 순회(tree traversal)
+   - 이진 트리의 모든 노드를 한번씩 읽는 것
+   - 중위 순회(inorder) : 오름차순으로 정렬된다.
+<br>
+
+
+## HashMap
+- 순서x, 중복(키x, 값o)
+- Map 인터페이스를 구현한 대표적인 컬렉션 클래스
+- **순서를 유지**하려면, **LinkedHashMap**클래스를 사용하면 된다.
+- 해싱기법으로 데이터 저장 -> 데이터가 많아도 **검색속도가 빠르다.**
+- 해싱(hashing)의 원리
+   - (ex.환자정보관리) 해시 함수를 이용해서 해시테이블에 있는 데이터 읽고 저장
+
+#### HashTable
+- 순서x, 중복(키x, 값o)
+- 배열과 LinkedList가 조합된 형태(chaining)
+   - 2차월 배열 혈태이라서 table이라고 하며, LinkedList 여러개를 묶은 형태
+- 배열의 장점인 **접근성** + LinkedList의 장점인 **쉬운 변경**
+
+#### 해싱(hashing)
+- 해시함수(hash function)로 해시테이블에 데이터를 **저장,검색**
+- 해싱 과정
+   1. 키로 해시함수를 호출해서 **해시코드(배열의 인덱스, 저장위치)** 를 얻는다.(해당 환자의 차트가 **몇 번쨰 캐비넷에 있는지** 찾는다.)
+   2. 해시코드(해시 반환값)에 대응하는 LL를 배열에서 찾는다.
+   3. LL에서 키와 일치하는 데이터 탐색
+   - 같은 키에 대해 같은 해시코드 반환해야 함(저장/읽어올 때 모두 같은 값이 나와야 함)
+   - 서로 다른 키 일지라도 같은 값의 해시코드를 반환 할 수 있음.(= 서로 다른 키 값이 **같은 캐비넷**에 있다는 뜻)
+
+#### HashMap의 주요 생성자와 메서드
+- `HashMap()` : 생성자. HashMap 객체를 생성
+- `HashMap(int inicialCapacity)` : 지정된 값을 초기용량으로 하는 HashMap 객체를 생성
+- `Object put(Object key, Object value)` : 지정된 키와 값을 HashMap에 저장
+- 읽기
+   *Entry(key + value)
+   - `Set entrySet()` : HashMap에 저장된 키와 값을 **엔트리의 형태로 Set에 저장해서 반환**
+   - `Set keySet()` : HashMap에 저장된 **모든 키가 저장된** Set을 반환
+   - `Collection values()` : HashMap에 저장된 **모든 값을 컬렉션의 형태로** 반환
+<br>
+
+
+## Collections클래스
+#### Collections
+- 컬렉션을 위한 메서드(static) 제공
+- 컬렉션 채우기(`fill()`), 복사(`copy()`), 정렬(`sort()`), 검색(`binarysearch()`) 등
+- 컬렉션의 **동기화** : `synchronizedXXX()`
+   - ex. synchronizedCollection(Collection c), synchronizedList(List list)
+- **변경불가(readOnly)** 컬렉션 만들기
+   - `unmodifiableXXX()`
+- **싱글톤** 컬렉션 만들기
+   - `singletonXXX()`
+   - **객체 1개만 저장**
+- **한 종류의 객체만 저장**하는 컬렉션 만들기
+   - `checkedXXX()`
+   - 한 종류의 객체만 저장하는 컬렉션
+   - ex. `List checkedList` = `checkedList(list, String.class)`
+   - String만 저장 가능
+- **공통 요소가 있는지** 확인할 때 사용하는 메서드
+   - `disjoint(list, newList)`
 
