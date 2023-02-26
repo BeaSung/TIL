@@ -76,13 +76,13 @@
 - 함수형 인터페이스 API
 - 자주 사용하는 다양한 함수형 인터페이스 제공(표준화)
 
-| 인터페이스명   | 반환 자료형 | 메서드  | 매개 변수 |
-|----------|--------|------|-------|
-| Runnable | void   | run() | 없음    |
-| Supplier | T      | get() | 없음    |
-| Consumer | void   | accept(Tt) | 1개    |
-| Function<T,R> | R   | apply(Tt) | 1개    |
-| Predicate | boolean   | test(Tt) | 1개    |
+| 인터페이스명        | 반환 자료형  | 메서드        | 매개 변수 |
+|---------------|---------|------------|-------|
+| Runnable      | void    | run()      | 없음    |
+| Supplier      | T       | get()      | 없음    |
+| Consumer      | void    | accept(Tt) | 1개    |
+| Function<T,R> | R       | apply(Tt)  | 1개    |
+| Predicate     | boolean | test(Tt)   | 1개    |
 
 <br>
 
@@ -169,7 +169,7 @@
             Name name1 = supplier1.get();   // Name name = new Name();
             System.out.println("람다식 - " + name1.getName());
             
-            Supplier<Name> = supplier2 = Name::new;
+            Supplier<Name> supplier2 = Name::new;
             Name name2 = supplier2.get();
             System.out.println("생성자 참조 - " + name2.getName());
         }
