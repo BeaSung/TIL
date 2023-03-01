@@ -10,9 +10,9 @@ JPA 는 **Java Persistence(영속성) API**이다.
 
 <br>
 
-`CRUD`: **Create** Read Update Delete
+`CRUD`: Create Read Update Delete
 
-Create는 Client > Server > DB로 전달되는 과정이 있다. DB란 데이터를 정리하는 창고이다.
+**Create**는 **Client > Server > DB**로 전달되는 과정이 있다. DB란 데이터를 정리하는 창고이다.
 
 DB에 데이터를 등록하려면 Server가 DB에 관리를 요청하면되는데, Server는 Java, DB는 SQL을 사용하고, DB는 자바를 이해하지 못한다는 문제점이있다.
 
@@ -47,7 +47,7 @@ DB에서 데이터를 받기위해, JAVA에서 코드, 즉 모델링을 통해 �
 
 반대로 자바에서 객체 코드를 이용해서 DB 데이터 테이블을 생성할 수 있는데, 이를 자동으로 해주는게 ORM이다.
 
-ORM 없이 DataBase의 데이터를 조작하기 위해서는 아래의 일련의 과정(CRUD)을 통해야 하는데, 그 과정을 ORM에서 자동으로 제공해준다.
+ORM 없이 DataBase의 데이터를 조작하기 위해서는 위와 같은 일련의 과정(CRUD)을 통해야 하는데, 그 과정을 ORM에서 자동으로 제공해준다.
 
 <br>
 
@@ -107,9 +107,15 @@ public class Article {
 }
 ````
 
-- **@Id**
+#### @ 어노테이션
+
+
+- **@Entity**
+  - 클래스 위에 선언하여 이 클래스가 엔티티임을 알려준다. 이렇게 되면 JPA에서 정의된 필드들을 바탕으로 데이터베이스에 테이블을 만들어준다.
+
+- **@Id, @GeneratedValue**
   - primary key를 가지는 변수를 선언하는 것을 뜻한다. 
-  - @GeneratedValue 어노테이션은 해당 Id 값을 어떻게 자동으로 생성할지 전략을 선택할 수 있다. 
+  - @GeneratedValue는 이 PK가 자동으로 1씩 증가하는 형태로 생성될지 등을 결정해주는 어노테이션이다. 
 
 - **@Table**
   - 별도의 이름을 가진 데이터베이스 테이블과 매핑한다. 
