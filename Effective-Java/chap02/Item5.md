@@ -1,0 +1,48 @@
+# 자원을 직접 명시하지 말고 의존객체를 주입을 사용하라
+
+대부분의 클래스는 하나 이상의 리소스에 의존한다. 이번 예제에서는 `SpellChecker`가 `Lexicon`를 의존하고 있는 모습이다.
+</br>
+## 부적절한 구현
+### 정적 유틸리티를 잘못 사용한 예 - 유연하지 않고 테스트 할 수 없다.
+``` java
+public class SpellChecker {
+  private static final Lexicon dictionary = ...;
+  private SpellChecker() { } 
+  
+  public static boolean isValid(String word) { ... }
+  public static List<String> suggestions(String typo) { }  
+}
+```
+
+### 싱글턴을 잘못 사용한 예 - 유연하지 않고 테스트하기 어렵다.
+``` java
+public class SpellChecker {
+  private final Lexicon dictionary = ...;
+  private SpellChecker() { }
+  public static SpellChecker INSTANCE = new SpellChecker();
+  public static boolean isValid(String word) { ... }
+  public static List<String> suggestions(String typo) { ... }
+}
+```
+사용하는 리소스에 따라 행동을 다르게 해야하는 클래스는 위에 말한 두 방식을 사용하는 것은 부적절하다. <br>
+이러한 불편 사항들을 해결하기 위해서는 인스턴스를 생성할 때 생성자에 자원을 넘겨주는 방식이 있다.
+
+
+## 적절한 구현
+### 의존 객체 주입은 유연성과 테스트 용이성을 높인다.
+``` java
+public class SpellChecker {
+  private final Lexicon dictionary;
+  public SpellChecker(Lexicon dictionary) {
+    this.dictionary = dictionary;
+  }
+  public static boolean isValid(String word) { ... }
+  public static List<String> suggestions(String typo) { }
+}
+```
+
+흔히 생성자 주입 방식이라고 부르고 이러한 방식은 불변을 보장하며 원하면 하위 타입 인스턴스의 다양한 구현체를 주입할 수 있다.</br>
+위와 같이 의존성을 주입하는 방식은 유연함과 테스트 용이함을 크게 향상시켜 주지만, 의존성이 많아질 경우 코드가 장황해질 수 있다.</br>
+하지만 이 점은 스프링 같은 프레임워크로 해결할 수 있다. </br>
+요약하자면 의존하는 리소스에 따라 행동을 달리하는 클레스를 사용할 때는 싱글턴이나 스태틱 유틸클래스를 사용하지말고
+리소스를 생성자를 통해 의존성을 주입받는 걸 추천한다.
