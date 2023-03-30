@@ -132,5 +132,69 @@ $ git status
     $ git reset HEAD README.md
     ```
 
+<br>
 
+## 3. Branch 삭제/복구하기
+### 3-1. branch 삭제
+- 특정 브랜치를 삭제하는 명령어
+    ```bash
+    $ git branch -D <삭제할 브랜치명>
+    ```
+
+### 3-2. branch 복구
+삭제한 브랜치를 복구하는 것은 2단계로 나눠서 진행할 수 있다.
+
+1. **`git reflog`로 복구 시점 확인** <br>
+먼저, 삭제한 브랜치를 어떤 시점으로 복구할 것인지 알아야 한다. 삭제한 브랜치가 남겼었던 커밋 중 어떤 상태로 돌아갈 지를 찾아서 커밋 해시값을 가져와야 한다. 이를 위해서 모든 참조 목록을 확인 할 수 있는 `git reflog`명령어를 입력한다.
+    ```bash
+    $ git reflog
+    ```
+
+2. **`git checkout`으로 브랜치 복구** <br>
+브랜치를 복구하는 명령어는 다음과 같다.
+    ```bash
+    $ git checkout -b <삭제한 브랜치명> <커밋 해시값>
+    ```
+
+<br>
+
+## 4. merge(합병)하기
+- 두 branch로 나누어 작업했던 것을 병합하는 명령어
+    ```bash
+    $ git checkout main
+    $ git log
+    $ git merge binky
+    $ git log
+    ```
+- merge가 완료되었으면 push 까지 해주셔야 원격 저장소에 반영이 된다.
+    ```bash
+    $ git push origin main
+    ```
+- binky 브랜치를 merge한 후에 gary의 브랜치를 merge해 보도록 하겠다. 만약, 두 브랜치가 같은 곳을 수정했다면 충돌이 일어나지만 지금은 다른 곳을 수정했다는 가정하에 진행하도록 하겠다.
+    ```bash
+    $ git merge Gary
+    $ git push origin main
+    ```
+
+<br>
+
+## 5. conflict (충돌)
+개리 브랜치와 main 브랜치 둘 다 README.md에서 작업을 하는데 서로 변경 내역이 다르다고 가정해 보자.<br>
+merge할 때 두 브랜치가 같은 곳을 수정했다면 충돌이 일어난다. 이때 충돌난 시점을 찾아 수동으로 고쳐주어야 한다.<br>
+```Bash
+<<<<<<< HEAD (Current Change)
+hello world
+hello binky
+=======
+>>>>>>> branchName (Incoming Change)
+hello world
+hello Gary
+```
+
+conflict는 두가지 변경 내역을 비교한 다음에 원하는 코드를 남기는 것이다.
+```bash
+hello world
+hello binky Gary
+```
+이후 `add > commit > push` 를 해주면 된다.
 
